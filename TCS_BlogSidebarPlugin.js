@@ -102,7 +102,7 @@ function assignStyles(inputElement) {
 
     if (!inputElement) return;
 
-    const { pageType } = pageInfo;
+    const { pageType } = checkPageInfo();
     const sidebarContainer = document.getElementById('sidebar-container');
     const sidebarSections = document.querySelectorAll('#sidebar-container section');
     const contentCollection = document.querySelector('.content-collection .content');
