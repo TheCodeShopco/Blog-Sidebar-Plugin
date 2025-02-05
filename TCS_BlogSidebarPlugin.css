@@ -39,6 +39,8 @@
   padding-bottom: var(--sqs-site-gutter);
   padding-right: 0vw;
   padding-left: var(--sqs-site-gutter);
+  flex-grow: 1;
+  flex-shrink: 0;
   @media (max-width: 768px) {
     display: none;
   }
@@ -70,4 +72,5 @@
 
 #sidebar-container .fluid-engine {
   --sqs-site-gutter: 0vw;
+  column-gap: 0px;
 }
