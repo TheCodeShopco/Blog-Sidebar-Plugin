@@ -27,19 +27,24 @@
 }
 
 #sidebar-container {  
-  padding-top: 4vw;
-  padding-bottom: 4vw;
+  padding-top: var(--sqs-site-gutter);
+  padding-bottom: var(--sqs-site-gutter);
   padding-right: 0vw;
   padding-left: var(--sqs-site-gutter);
 }
 
+#sidebar-inner {
+  height: 100%;
+}
+
 .sidebar-position-left {
   padding-left: 0 !important;
-  padding-right: 4vw !important;
+  padding-right: var(--sqs-site-gutter) !important;
 }
 
 #sidebar-container section {
   overflow: hidden;
+  height: 100%;
 }
 
 #sidebar-container .content-wrapper {
