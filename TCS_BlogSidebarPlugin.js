@@ -166,6 +166,27 @@ function assignStyles(inputElement) {
             section.style.border = borderStyle;
         });
     }
+
+    if (inputElement.hasAttribute('data-sidebar-sticky')) {
+        const sticky = inputElement.getAttribute('data-sidebar-sticky');
+        if (sticky === 'true') {
+            sidebarSections.forEach(section => {
+                section.style.position = 'sticky';
+            });
+        } else {
+            sidebarSections.forEach(section => {
+                section.style.position = 'relative';
+            });
+        }
+    }
+
+    if (inputElement.hasAttribute('data-sidebar-sticky-offset')) {
+        const stickyOffset = inputElement.getAttribute('data-sidebar-sticky-offset');
+        sidebarSections.forEach(section => {
+            section.style.top = stickyOffset;
+        });
+    }
+
 }
 
 function initialiseBlogSidebar() {
