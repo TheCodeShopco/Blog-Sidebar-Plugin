@@ -36,19 +36,17 @@ function createSidebarContainer(pageInfo) {
     innerDiv.id = 'sidebar-inner';
     aside.appendChild(innerDiv);
 
-    if (pageType === 'page') {
-        const contentCollection = document.querySelector('.content-collection .content');
+    const contentCollection = document.querySelector('.content-collection .content');
         if (contentCollection) {
             contentCollection.appendChild(aside);
+            let blogType = contentCollection.querySelectorAll('*');
+            blogType.forEach(element => {
+                if (element.classList.contains('blog-alternating-side-by-side')) {
+                    element.classList.add('collection-content-wrapper');
+                }
+            })
             console.log('Sidebar added to blog page');
         }
-    } else if (pageType === 'post') {
-        const blogItemWrapper = document.querySelector('.blog-item-wrapper');
-        if (blogItemWrapper) {
-            blogItemWrapper.appendChild(aside);
-            console.log('Sidebar added to blog post');
-        }
-    }
 }
 
 function checkSidebarValidity(pageInfo) {
@@ -101,26 +99,50 @@ function moveSidebar(pageInfo) {
 }
 
 function assignStyles(inputElement) {
+
     if (!inputElement) return;
 
+    const { pageType } = pageInfo;
     const sidebarContainer = document.getElementById('sidebar-container');
+    const sidebarSections = document.querySelectorAll('#sidebar-container section');
     const contentCollection = document.querySelector('.content-collection .content');
     const contentCollectionWrapper = document.querySelector('.content-collection .collection-content-wrapper');
-    const sidebarSections = document.querySelectorAll('#sidebar-container section');
+    const blogItemWrapper = document.querySelector('.blog-item-wrapper');
+    const article = document.querySelector('.blog-item-wrapper article');
+    const blogItemInner = document.querySelector('.blog-item-wrapper article .blog-item-inner-wrapper');
+
+    contentCollection.classList.add('blog-sidebar-layout-active');
+    
+    if (pageType === 'page') {
+        contentCollectionWrapper.classList.add('blog-sidebar-padding-active');    
+    }
+
+    if (pageType === 'post') {
+        article.classList.add('blog-sidebar-padding-active')
+        blogItemInner.classList.add('blog-sidebar-post-layout-active');
+    }
 
     if (inputElement.hasAttribute('data-sidebar-width')) {
         const width = inputElement.getAttribute('data-sidebar-width');
         sidebarContainer.style.flexBasis = width;
+        const contentWidth = `calc(100% - ${width})`;
         if (contentCollectionWrapper) {
-            const contentWidth = `calc(100% - ${width})`;
             contentCollectionWrapper.style.flexBasis = contentWidth;
+            }
+        if (blogItemWrapper) { {
+            blogItemWrapper.style.flexBasis = contentWidth;
+            }
         }
     }
-
+    
     if (inputElement.hasAttribute('data-sidebar-side')) {
         const side = inputElement.getAttribute('data-sidebar-side');
         contentCollection.style.flexDirection = side === 'right' ? 'row' : 'row-reverse';
+        if (side === 'left') {
+            sidebarContainer.classList.add('sidebar-position-left');
+        }
     }
+
 
     if (inputElement.hasAttribute('data-sidebar-internal-padding')) {
         const padding = inputElement.getAttribute('data-sidebar-internal-padding');
