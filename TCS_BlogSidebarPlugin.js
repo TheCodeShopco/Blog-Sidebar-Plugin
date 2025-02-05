@@ -84,6 +84,7 @@ function moveSidebar(pageInfo) {
             if (dataPageOrPost === pageType || dataPageOrPost === 'both') {
                 const section = element.closest('section');
                 if (section) {
+                    section.classList.remove('page-section');
                     const sidebarInner = document.getElementById('sidebar-inner');
                     if (sidebarInner) {
                         sidebarInner.appendChild(section); // Move the section directly
