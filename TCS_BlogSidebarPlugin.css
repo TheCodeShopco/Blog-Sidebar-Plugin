@@ -74,7 +74,3 @@
   --row-height-scaling-factor: 0;
   column-gap: 0px;
 }
-
-section:has(#sidebar) .fluid-engine {
-  --sqs-site-gutter: 42vw !important;
-}
