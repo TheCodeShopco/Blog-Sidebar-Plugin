@@ -1,17 +1,3 @@
-function adjustSidebarsPageWidth() {
-    let sidebarSelector = document.querySelector('#sidebar');
-
-    if (sidebarSelector) {
-        let sidebarWidth = sidebarSelector.getAttribute('data-sidebar-width');
-        let fluidEngine = sidebarSelector.closest('.page-section').querySelector('.fluid-engine');
-        fluidEngine.style.maxWidth = `${sidebarWidth}`;
-    } else {
-        return
-    }
-}
-
-document.addEventListener('DOMContentLoaded', adjustSidebarsPageWidth);
-
 function checkPageInfo() {
     let pageSlug = window.location.pathname;
     let pageType;
