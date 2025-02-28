@@ -70,7 +70,18 @@
 }
 
 #sidebar-container .fluid-engine {
-  --sqs-site-gutter: 0vw;
+  --sqs-site-gutter: 15px !important;
   --row-height-scaling-factor: 0;
   column-gap: 0px;
+}
+
+.fluid-engine:has(#sidebar) {
+  --sqs-site-gutter: 43vw;
+  --row-height-scaling-factor: 0 !important;
+}
+
+#sidebar-inner .newsletter-form-footnote {
+  position: relative;
+  top: 2rem;
+  margin-bottom: 2.5rem;
 }
