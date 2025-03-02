@@ -71,6 +71,7 @@ function checkSidebarValidity(pageInfo) {
             for (const element of elements) {
                 const dataPageOrPost = element.getAttribute('data-page-or-post');
                 if (dataPageOrPost === pageType || dataPageOrPost === 'both') {
+                    document.querySelector('main').style.opacity = 0;
                     return true;
                 }
             }
@@ -206,7 +207,9 @@ function initialiseBlogSidebar() {
     checkSidebarValidity(pageInfo).then(isValid => {
         if (isValid) {
             createSidebarContainer(pageInfo);
-            fetchSidebars(pageInfo);
+            fetchSidebars(pageInfo).then(() => {
+                document.querySelector('main').style.opacity = 1;
+            });
         }
     });
 }
