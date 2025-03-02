@@ -1,9 +1,13 @@
+// Function to check the page and return the url slug and check the type of page user is on //
+
 function checkPageInfo() {
     let pageSlug = window.location.pathname;
     let pageType;
 
+    // Getting the number of '/' characters in the url //
     const slashCount = (pageSlug.match(/\//g) || []).length;
 
+    // If page has an extra '/', we know it is not a blog page, but a post //
     if (slashCount === 1) {
         pageType = 'page';
     } else if (slashCount === 2) {
@@ -13,10 +17,13 @@ function checkPageInfo() {
         pageType = 'home';
     }
 
+    // removing the '/' characters from the url to save as a variable //
     pageSlug = pageSlug.replace(/\//g, '');
 
     return { pageType, pageSlug };
 }
+
+// Function to fetch the sidebars page and add it to the current page in an iFrame to ensure functions remain, while also finding the right sidebar and moving it //
 
 function fetchSidebars(pageInfo) {
     const iframe = document.createElement('iframe');
@@ -27,6 +34,8 @@ function fetchSidebars(pageInfo) {
     document.head.appendChild(iframe);
 }
 
+// Function to create the sidebar container on the blog page //
+
 function createSidebarContainer(pageInfo) {
     const { pageType } = pageInfo;
     const aside = document.createElement('aside');
@@ -36,6 +45,7 @@ function createSidebarContainer(pageInfo) {
     innerDiv.id = 'sidebar-inner';
     aside.appendChild(innerDiv);
 
+    // Adding the sidebar to the page, and also adding a class to a specific blog type to fix an issue //
     const contentCollection = document.querySelector('.content-collection .content');
         if (contentCollection) {
             contentCollection.appendChild(aside);
@@ -47,6 +57,8 @@ function createSidebarContainer(pageInfo) {
             })
         }
 }
+
+// Fucntion to check whether there is a valid sidebar for the current page //
 
 function checkSidebarValidity(pageInfo) {
     const { pageType, pageSlug } = pageInfo;
@@ -68,6 +80,8 @@ function checkSidebarValidity(pageInfo) {
             return false;
         });
 }
+
+// Function that moves the sidebar from the iFrame into the sidebar container //
 
 function moveSidebar(pageInfo) {
     const { pageType, pageSlug } = pageInfo;
@@ -92,6 +106,8 @@ function moveSidebar(pageInfo) {
         }
     }
 }
+
+// Function to assign all the styles selected in the sidebar code block //
 
 function assignStyles(inputElement) {
 
@@ -182,6 +198,8 @@ function assignStyles(inputElement) {
     }
 
 }
+
+// Initialisation function to call all the functions in the right order //
 
 function initialiseBlogSidebar() {
     const pageInfo = checkPageInfo();
