@@ -1,5 +1,6 @@
 #siteWrapper {
-  visibility: hidden;
+  opacity: 0;
+  transition: all 400ms ease;
 }
 
 .blog-sidebar-layout-active {

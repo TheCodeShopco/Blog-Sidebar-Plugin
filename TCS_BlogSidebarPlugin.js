@@ -202,13 +202,13 @@ function initialiseBlogSidebar() {
         if (isValid) {
             createSidebarContainer(pageInfo);
             fetchSidebars(pageInfo).then(() => {
-                document.querySelector('#siteWrapper').style.visibility = 'visible';
+                document.querySelector('#siteWrapper').style.opacity = 1;
             });
         } else {
-            document.querySelector('#siteWrapper').style.visibility = 'visible';
+            document.querySelector('#siteWrapper').style.opacity = 1;
         }
     });
-    document.querySelector('#siteWrapper').style.visibility = 'hidden';
+    document.querySelector('#siteWrapper').style.opacity = 0;
 }
 
 document.addEventListener('DOMContentLoaded', initialiseBlogSidebar);
