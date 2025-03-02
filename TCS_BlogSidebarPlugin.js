@@ -71,10 +71,10 @@ function checkSidebarValidity(pageInfo) {
             for (const element of elements) {
                 const dataPageOrPost = element.getAttribute('data-page-or-post');
                 if (dataPageOrPost === pageType || dataPageOrPost === 'both') {
-                    document.querySelector('main').style.opacity = 0;
                     return true;
                 }
             }
+            document.querySelector('main').style.opacity = 1;
             return false;
         })
         .catch(error => {
@@ -208,10 +208,12 @@ function initialiseBlogSidebar() {
         if (isValid) {
             createSidebarContainer(pageInfo);
             fetchSidebars(pageInfo).then(() => {
-                document.querySelector('main').style.opacity = 1;
             });
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', initialiseBlogSidebar);
+document.querySelector('main').style.opacity = 0;
+document.addEventListener('DOMContentLoaded', initialiseBlogSidebar).then(() => {
+    document.querySelector('main').style.opacity = 1;
+});
