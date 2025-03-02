@@ -213,7 +213,9 @@ function initialiseBlogSidebar() {
     });
 }
 
-document.querySelector('html').style.opacity = 0;
-document.addEventListener('DOMContentLoaded', initialiseBlogSidebar).then(() => {
-    document.querySelector('main').style.opacity = 1;
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('main').style.opacity = 0;
+    initialiseBlogSidebar().then(() => {
+        document.querySelector('main').style.opacity = 1;
+    });
 });
