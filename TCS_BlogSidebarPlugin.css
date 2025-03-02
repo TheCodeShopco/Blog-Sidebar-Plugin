@@ -69,7 +69,7 @@
 }
 
 #sidebar-container .fluid-engine {
-  --sqs-site-gutter: 15px !important;
+  --sqs-site-gutter: 0 !important;
   --row-height-scaling-factor: 0;
   column-gap: 0px;
 }
