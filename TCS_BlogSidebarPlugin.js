@@ -202,7 +202,6 @@ function assignStyles(inputElement) {
 // Initialisation function to call all the functions in the right order //
 
 function initialiseBlogSidebar() {
-    document.querySelector('body').style.opacity = "0";
     const pageInfo = checkPageInfo();
     checkSidebarValidity(pageInfo).then(isValid => {
         if (isValid) {
@@ -210,7 +209,6 @@ function initialiseBlogSidebar() {
             fetchSidebars(pageInfo);
         }
     });
-    document.querySelector('body').style.opacity = "1";
 }
 
 document.addEventListener('DOMContentLoaded', initialiseBlogSidebar);
