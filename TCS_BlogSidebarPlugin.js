@@ -202,14 +202,14 @@ function initialiseBlogSidebar() {
         if (isValid) {
             createSidebarContainer(pageInfo);
             fetchSidebars(pageInfo).then(() => {
-                // Once everything is loaded, reveal the 'main' element
-                document.querySelector('main').style.visibility = 'visible';
+                // Once everything is loaded, reveal the 'blog' element
+                document.querySelector('#siteWrapper').style.visibility = 'visible';
             });
         }
     });
 
-    // Hide 'main' initially
-    document.querySelector('main').style.visibility = 'hidden';
+    // Hide 'blog' initially
+    document.querySelector('#siteWrapper').style.visibility = 'hidden';
 }
 
 document.addEventListener('DOMContentLoaded', initialiseBlogSidebar);
