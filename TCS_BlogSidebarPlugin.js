@@ -203,19 +203,28 @@ function assignStyles(inputElement) {
 // Initialisation function to call all the functions in the right order //
 
 function initialiseBlogSidebar() {
-    const pageInfo = checkPageInfo();
-    checkSidebarValidity(pageInfo).then(isValid => {
-        if (isValid) {
-            createSidebarContainer(pageInfo);
-            fetchSidebars(pageInfo).then(() => {
-            });
-        }
+    return new Promise((resolve, reject) => {
+        const pageInfo = checkPageInfo();
+        checkSidebarValidity(pageInfo).then(isValid => {
+            if (isValid) {
+                createSidebarContainer(pageInfo);
+                fetchSidebars(pageInfo);
+                resolve();
+            } else {
+                resolve();
+            }
+        }).catch(error => {
+            reject(error);
+        });
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('main').style.opacity = 0;
     initialiseBlogSidebar().then(() => {
+        document.querySelector('main').style.opacity = 1;
+    }).catch(error => {
+        console.error('Error initializing blog sidebar:', error);
         document.querySelector('main').style.opacity = 1;
     });
 });
