@@ -1,5 +1,4 @@
 
-/* .content collection .content */
 .blog-sidebar-layout-active {
   @media (min-width: 768px) {
   display: flex;
@@ -9,7 +8,6 @@
   }
 }
 
-/* .content-collection .collection-content-wrapper */
 .blog-sidebar-padding-active {
   @media (min-width: 768px) {
   padding-left: 0;
@@ -17,7 +15,6 @@
   }
 }
 
-/* .blog-item-wrapper article */
 .blog-sidebar-padding-active {
   @media (min-width: 768px) {
   padding-left: 0 !important;
@@ -25,8 +22,6 @@
   }
 }
 
-
-/* .blog-item-wrapper article .blog-item-inner-wrapper */
 .blog-sidebar-post-layout-active {
   @media (min-width: 768px) {
   margin: 0;

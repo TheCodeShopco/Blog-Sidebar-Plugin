@@ -45,7 +45,6 @@ function createSidebarContainer(pageInfo) {
                     element.classList.add('collection-content-wrapper');
                 }
             })
-            console.log('Sidebar added to blog page');
         }
 }
 
@@ -60,15 +59,12 @@ function checkSidebarValidity(pageInfo) {
             for (const element of elements) {
                 const dataPageOrPost = element.getAttribute('data-page-or-post');
                 if (dataPageOrPost === pageType || dataPageOrPost === 'both') {
-                    console.log(`Element with data-page-url ${pageSlug} and matching data-page-or-post found.`);
                     return true;
                 }
             }
-            console.log(`Element with data-page-url ${pageSlug} not found or data-page-or-post does not match.`);
             return false;
         })
         .catch(error => {
-            console.error('Error fetching sidebars:', error);
             return false;
         });
 }
@@ -87,10 +83,8 @@ function moveSidebar(pageInfo) {
                     section.classList.remove('page-section');
                     const sidebarInner = document.getElementById('sidebar-inner');
                     if (sidebarInner) {
-                        sidebarInner.appendChild(section); // Move the section directly
-                        console.log('Sidebar moved to the main page.');
+                        sidebarInner.appendChild(section);
                         assignStyles(element);
-                        console.log('Sidebar styles assigned.');
                         return;
                     }
                 }
