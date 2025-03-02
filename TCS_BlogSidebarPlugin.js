@@ -1,5 +1,4 @@
 // Function to check the page and return the url slug and check the type of page user is on //
-
 function checkPageInfo() {
     let pageSlug = window.location.pathname;
     let pageType;
@@ -24,18 +23,22 @@ function checkPageInfo() {
 }
 
 // Function to fetch the sidebars page and add it to the current page in an iFrame to ensure functions remain, while also finding the right sidebar and moving it //
-
 function fetchSidebars(pageInfo) {
-    const iframe = document.createElement('iframe');
-    iframe.src = '/sidebars';
-    iframe.style.display = 'none';
-    iframe.id = 'blog-sidebar-page';
-    iframe.onload = () => moveSidebar(pageInfo);
-    document.head.appendChild(iframe);
+    return new Promise((resolve, reject) => {
+        const iframe = document.createElement('iframe');
+        iframe.src = '/sidebars';
+        iframe.style.display = 'none';
+        iframe.id = 'blog-sidebar-page';
+        iframe.onload = () => {
+            moveSidebar(pageInfo);
+            resolve(); // Resolve when the sidebar is moved
+        };
+        iframe.onerror = reject; // Reject if there is an error
+        document.head.appendChild(iframe);
+    });
 }
 
 // Function to create the sidebar container on the blog page //
-
 function createSidebarContainer(pageInfo) {
     const { pageType } = pageInfo;
     const aside = document.createElement('aside');
@@ -47,19 +50,18 @@ function createSidebarContainer(pageInfo) {
 
     // Adding the sidebar to the page, and also adding a class to a specific blog type to fix an issue //
     const contentCollection = document.querySelector('.content-collection .content');
-        if (contentCollection) {
-            contentCollection.appendChild(aside);
-            let blogType = contentCollection.querySelectorAll('*');
-            blogType.forEach(element => {
-                if (element.classList.contains('blog-alternating-side-by-side')) {
-                    element.classList.add('collection-content-wrapper');
-                }
-            })
-        }
+    if (contentCollection) {
+        contentCollection.appendChild(aside);
+        let blogType = contentCollection.querySelectorAll('*');
+        blogType.forEach(element => {
+            if (element.classList.contains('blog-alternating-side-by-side')) {
+                element.classList.add('collection-content-wrapper');
+            }
+        });
+    }
 }
 
-// Fucntion to check whether there is a valid sidebar for the current page //
-
+// Function to check whether there is a valid sidebar for the current page //
 function checkSidebarValidity(pageInfo) {
     const { pageType, pageSlug } = pageInfo;
     return fetch('/sidebars')
@@ -82,7 +84,6 @@ function checkSidebarValidity(pageInfo) {
 }
 
 // Function that moves the sidebar from the iFrame into the sidebar container //
-
 function moveSidebar(pageInfo) {
     const { pageType, pageSlug } = pageInfo;
     const iframe = document.getElementById('blog-sidebar-page');
@@ -108,9 +109,7 @@ function moveSidebar(pageInfo) {
 }
 
 // Function to assign all the styles selected in the sidebar code block //
-
 function assignStyles(inputElement) {
-
     if (!inputElement) return;
 
     const { pageType } = checkPageInfo();
@@ -123,13 +122,13 @@ function assignStyles(inputElement) {
     const blogItemInner = document.querySelector('.blog-item-wrapper article .blog-item-inner-wrapper');
 
     contentCollection.classList.add('blog-sidebar-layout-active');
-    
+
     if (pageType === 'page') {
         contentCollectionWrapper.classList.add('blog-sidebar-padding-active');    
     }
 
     if (pageType === 'post') {
-        article.classList.add('blog-sidebar-padding-active')
+        article.classList.add('blog-sidebar-padding-active');
         blogItemInner.classList.add('blog-sidebar-post-layout-active');
     }
 
@@ -139,13 +138,12 @@ function assignStyles(inputElement) {
         const contentWidth = `calc(100% - ${width})`;
         if (contentCollectionWrapper) {
             contentCollectionWrapper.style.flexBasis = contentWidth;
-            }
-        if (blogItemWrapper) { {
+        }
+        if (blogItemWrapper) {
             blogItemWrapper.style.flexBasis = contentWidth;
-            }
         }
     }
-    
+
     if (inputElement.hasAttribute('data-sidebar-side')) {
         const side = inputElement.getAttribute('data-sidebar-side');
         contentCollection.style.flexDirection = side === 'right' ? 'row' : 'row-reverse';
@@ -153,7 +151,6 @@ function assignStyles(inputElement) {
             sidebarContainer.classList.add('sidebar-position-left');
         }
     }
-
 
     if (inputElement.hasAttribute('data-sidebar-internal-padding')) {
         const padding = inputElement.getAttribute('data-sidebar-internal-padding');
@@ -196,20 +193,23 @@ function assignStyles(inputElement) {
             section.style.top = stickyOffset;
         });
     }
-
 }
 
 // Initialisation function to call all the functions in the right order //
-
 function initialiseBlogSidebar() {
     const pageInfo = checkPageInfo();
     checkSidebarValidity(pageInfo).then(isValid => {
         if (isValid) {
             createSidebarContainer(pageInfo);
-            fetchSidebars(pageInfo);
+            fetchSidebars(pageInfo).then(() => {
+                // Once everything is loaded, reveal the 'main' element
+                document.querySelector('main').style.visibility = 'visible';
+            });
         }
     });
-    document.querySelector('main').style.visibility = 'visible';
+
+    // Hide 'main' initially
+    document.querySelector('main').style.visibility = 'hidden';
 }
 
-document.addEventListener('DOMContentLoaded',initialiseBlogSidebar);
+document.addEventListener('DOMContentLoaded', initialiseBlogSidebar);
