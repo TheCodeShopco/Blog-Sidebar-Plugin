@@ -1,3 +1,6 @@
+main {
+  visibility: hidden;
+}
 
 .blog-sidebar-layout-active {
   @media (min-width: 768px) {
