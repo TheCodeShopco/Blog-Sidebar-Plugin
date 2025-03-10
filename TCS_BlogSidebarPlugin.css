@@ -73,3 +73,17 @@
   --row-height-scaling-factor: 0;
   column-gap: 0px;
 }
+
+.fluid-engine:has(#sidebar) {
+  --row-height-scaling-factor: 0 !important;
+}
+
+#sidebar-inner .newsletter-form-footnote {
+  position: relative;
+  top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+#sidebar-container, #sidebar-container * {
+  box-sizing: border-box;
+}
