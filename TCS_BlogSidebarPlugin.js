@@ -211,5 +211,7 @@ function initialiseBlogSidebar() {
 document.addEventListener('DOMContentLoaded', () => {
     initialiseBlogSidebar().then(() => {
         Squarespace.initializeLayoutBlocks(Y);
+        Squarespace.initializeWebsiteComponent(Y);
+        Squarespace.initializeCommerce(Y);
     });
 });
