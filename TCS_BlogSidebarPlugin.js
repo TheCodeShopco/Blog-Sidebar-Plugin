@@ -22,19 +22,38 @@ function checkPageInfo() {
     return { pageType, pageSlug };
 }
 
-// Function to fetch the sidebars page and add it to the current page in an iFrame to ensure functions remain, while also finding the right sidebar and moving it //
-function fetchSidebars(pageInfo) {
+// Function to fetch the sidebars page and move the sidebar elements to the current page //
+function fetchAndMoveSidebars(pageInfo) {
     return new Promise((resolve, reject) => {
-        const iframe = document.createElement('iframe');
-        iframe.src = '/sidebars';
-        iframe.style.display = 'none';
-        iframe.id = 'blog-sidebar-page';
-        iframe.onload = () => {
-            moveSidebar(pageInfo);
-            resolve(); // Resolve when the sidebar is moved
-        };
-        iframe.onerror = reject; // Reject if there is an error
-        document.head.appendChild(iframe);
+        const { pageType, pageSlug } = pageInfo;
+        fetch('/sidebars')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const elements = doc.querySelectorAll(`[data-page-url="${pageSlug}"]`);
+                for (const element of elements) {
+                    const dataPageOrPost = element.getAttribute('data-page-or-post');
+                    if (dataPageOrPost === pageType || dataPageOrPost === 'both') {
+                        const section = element.closest('section');
+                        if (section) {
+                            section.classList.remove('page-section');
+                            const sidebarInner = document.getElementById('sidebar-inner');
+                            if (sidebarInner) {
+                                sidebarInner.appendChild(section);
+                                assignStyles(element);
+                                resolve();
+                                return;
+                            }
+                        }
+                    }
+                }
+                reject('No matching sidebar found');
+            })
+            .catch(error => {
+                console.error('Error fetching sidebars:', error);
+                reject(error);
+            });
     });
 }
 
@@ -81,31 +100,6 @@ function checkSidebarValidity(pageInfo) {
         .catch(error => {
             return false;
         });
-}
-
-// Function that moves the sidebar from the iFrame into the sidebar container //
-function moveSidebar(pageInfo) {
-    const { pageType, pageSlug } = pageInfo;
-    const iframe = document.getElementById('blog-sidebar-page');
-    if (iframe) {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        const elements = iframeDoc.querySelectorAll(`[data-page-url="${pageSlug}"]`);
-        for (const element of elements) {
-            const dataPageOrPost = element.getAttribute('data-page-or-post');
-            if (dataPageOrPost === pageType || dataPageOrPost === 'both') {
-                const section = element.closest('section');
-                if (section) {
-                    section.classList.remove('page-section');
-                    const sidebarInner = document.getElementById('sidebar-inner');
-                    if (sidebarInner) {
-                        sidebarInner.appendChild(section);
-                        assignStyles(element);
-                        return;
-                    }
-                }
-            }
-        }
-    }
 }
 
 // Function to assign all the styles selected in the sidebar code block //
@@ -198,17 +192,24 @@ function assignStyles(inputElement) {
 // Initialisation function to call all the functions in the right order //
 function initialiseBlogSidebar() {
     const pageInfo = checkPageInfo();
-    checkSidebarValidity(pageInfo).then(isValid => {
+    document.querySelector('#siteWrapper').style.opacity = 0;
+    return checkSidebarValidity(pageInfo).then(isValid => {
         if (isValid) {
             createSidebarContainer(pageInfo);
-            fetchSidebars(pageInfo).then(() => {
+            return fetchAndMoveSidebars(pageInfo).then(() => {
+                document.querySelector('#siteWrapper').style.opacity = 1;
+            }).catch(error => {
+                console.error('Error moving sidebars:', error);
                 document.querySelector('#siteWrapper').style.opacity = 1;
             });
         } else {
             document.querySelector('#siteWrapper').style.opacity = 1;
         }
     });
-    document.querySelector('#siteWrapper').style.opacity = 0;
 }
 
-document.addEventListener('DOMContentLoaded', initialiseBlogSidebar);
+document.addEventListener('DOMContentLoaded', () => {
+    initialiseBlogSidebar().then(() => {
+        Squarespace.initializeLayoutBlocks(Y);
+    });
+});
