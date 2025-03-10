@@ -75,7 +75,6 @@
 }
 
 .fluid-engine:has(#sidebar) {
-  --sqs-site-gutter: 43vw;
   --row-height-scaling-factor: 0 !important;
 }
 
