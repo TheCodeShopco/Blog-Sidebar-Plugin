@@ -189,6 +189,12 @@ function assignStyles(inputElement) {
     }
 }
 
+function initializeSquarespaceContent() {
+    Squarespace.initializeLayoutBlocks;
+    Squarespace.initializeWebsiteComponent;
+    Squarespace.initializeCommerce;
+}
+
 // Initialisation function to call all the functions in the right order //
 function initialiseBlogSidebar() {
     const pageInfo = checkPageInfo();
@@ -210,8 +216,6 @@ function initialiseBlogSidebar() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initialiseBlogSidebar().then(() => {
-        Squarespace.initializeLayoutBlocks(Y);
-        Squarespace.initializeWebsiteComponent(Y);
-        Squarespace.initializeCommerce(Y);
+        initializeSquarespaceContent();
     });
 });
