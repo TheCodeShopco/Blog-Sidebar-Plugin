@@ -190,9 +190,9 @@ function assignStyles(inputElement) {
 }
 
 function initializeSquarespaceContent() {
-    Squarespace.initializeLayoutBlocks(document);
-    Squarespace.initializeWebsiteComponent(document);
-    Squarespace.initializeCommerce(document);
+    Squarespace.initializeLayoutBlocks(Y);
+    Squarespace.initializeWebsiteComponent(Y);
+    Squarespace.initializeCommerce(Y);
 }
 
 // Initialisation function to call all the functions in the right order //
