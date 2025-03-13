@@ -128,13 +128,13 @@ function assignStyles(inputElement) {
 
     if (inputElement.hasAttribute('data-sidebar-width')) {
         const width = inputElement.getAttribute('data-sidebar-width');
-        sidebarContainer.style.flexBasis = width;
+        sidebarContainer.style.maxWidth = width;
         const contentWidth = `calc(100% - ${width})`;
         if (contentCollectionWrapper) {
-            contentCollectionWrapper.style.flexBasis = contentWidth;
+            contentCollectionWrapper.style.maxWidth = contentWidth;
         }
         if (blogItemWrapper) {
-            blogItemWrapper.style.flexBasis = contentWidth;
+            blogItemWrapper.style.maxWidth = contentWidth;
         }
     }
 
